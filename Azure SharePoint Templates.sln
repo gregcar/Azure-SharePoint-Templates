@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "SharePoint ARM projects", "SharePoint ARM projects\SharePoint ARM projects.deployproj", "{988D4DE6-8327-4DBE-B92D-9BBF9C5AD545}"
 EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "SharePoint-2016-HA-Farm", "SharePoint 2016 HA Farm\SharePoint-2016-HA-Farm.deployproj", "{4D927057-03EC-470B-BCB9-D6A455287F02}"
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "SharePoint-2016-HA-Farm", "SharePoint-2016-HA-Farm\SharePoint-2016-HA-Farm.deployproj", "{4D927057-03EC-470B-BCB9-D6A455287F02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

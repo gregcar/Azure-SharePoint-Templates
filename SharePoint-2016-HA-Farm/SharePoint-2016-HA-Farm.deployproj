@@ -35,6 +35,7 @@
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
     <None Include="Templates\availabilitySets.json" />
+    <None Include="Templates\Configurations\ConfigureADBDC.ps1.zip" />
     <None Include="Templates\Configurations\ConfigureAlwaysOnSqlServer.ps1.zip" />
     <None Include="Templates\Configurations\ConfigureFailoverCluster.ps1.zip" />
     <None Include="Templates\Configurations\ConfigureFileShareWitness.ps1.zip" />

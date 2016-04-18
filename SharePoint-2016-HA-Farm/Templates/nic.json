@@ -4,33 +4,26 @@
   "parameters": {
     "location": {
       "type": "string",
-      "allowedValues": [
-        "West US",
-        "East US",
-        "West Europe",
-        "East Asia",
-        "Southeast Asia"
-      ],
       "metadata": {
-        "Description": "The region to deploy the resources into"
+        "description": "The region to deploy the resources into"
       }
     },
     "nicName": {
       "type": "string",
       "metadata": {
-        "Description": "The name of the NIC to Create or Update"
+        "description": "The name of the NIC to Create or Update"
       }
     },
     "ipConfigurations": {
       "type": "array",
       "metadata": {
-        "Description": "The IP configurations of the NIC"
+        "description": "The IP configurations of the NIC"
       }
     },
     "dnsServers": {
       "type": "array",
       "metadata": {
-        "Description": "The DNS Servers of the NIC"
+        "description": "The DNS Servers of the NIC"
       }
     }
   },
@@ -39,7 +32,7 @@
       "name": "[parameters('nicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "2015-06-15",
       "properties": {
         "ipConfigurations": "[parameters('ipConfigurations')]",
         "dnsSettings": {

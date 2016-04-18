@@ -1,33 +1,69 @@
 ﻿{
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "newStorageAccountName": {
-      "value": "gcspt01"
-    },
-    "location": {
-      "value": "East US"
-    },
-    "adminUsername": {
-      "value": "azureuser"
-    },
-    "adminPassword": {
-      "value": "Microsoft@123"
-    },
-    "adVMSize": {
-      "value": "Standard_D2"
-    },
-    "dnsPrefix": {
-      "value": "gcsspt01"
-    },
-    "publicIPAddressName": {
-      "value": "myPubIp"
-    },
-    "domainName": {
-      "value": "mydomain.local"
-    },
-    "assetLocation": {
-      "value": "https://raw.githubusercontent.com/gregcar/Azure-SharePoint-Templates/master/SharePoint-2016-HA-Farm/Templates/"
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location" : {
+            "value" :"eastus"
+        },
+        "adminUsername": {
+            "value": "azurespadmin"
+        },
+        "adminPassword": {
+            "value" : "Microsoft@123"
+        },
+        "sharepointFarmName" : {
+            "value":"SharepointFarm"
+        },
+        "sqlServerServiceAccountUserName":{
+            "value": "sqlservice"
+        },
+      "sqlServerServiceAccountPassword": {
+        "value": "7d@HvxfJz8pkk2_PeeMR"
+      },
+        "sharePointSetupUserAccountUserName":{
+            "value": "spsetup"
+        },
+      "sharePointSetupUserAccountPassword": {
+        "value": "sf5PD44X@#kP9GjjLYwB"
+      },
+        "sharePointFarmAccountPassword":{
+            "value": "Admin123sp!farm"
+        },
+      "sharePointFarmPassphrasePassword": {
+        "value": "Z^z&Qk5?qMBK+qq9WnzN"
+      },
+        "spWebIPRGName" : {
+            "value" : "SharePoint2016-Test01"
+        },
+        "spWebIPAddressName" : {
+            "value" : "spWebIp"
+        },
+        "spWebIPNewOrExisting": {
+            "value" : "new"
+        },
+        "dnsPrefix": {
+            "value" : "gcsp01dns"
+        },
+        "storageAccountNamePrefix": {
+            "value": "gcsp01str"
+        },
+        "storageAccountType": {
+            "value" : "Premium_LRS"
+        },
+        "adVMSize" : {
+            "value" : "Standard_DS1"
+        },
+        "sqlVMSize" : {
+            "value" : "Standard_DS3"
+        },
+        "witnessVMSize" : {
+            "value" : "Standard_DS1"
+        },
+        "spVMSize" : {
+            "value" : "Standard_DS3"
+        },
+        "domainName":{
+            "value":"contoso.local"
+        }
     }
-  }
 }

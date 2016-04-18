@@ -26,7 +26,6 @@
   <!-- vertag<:>end -->
   <ItemGroup>
     <Folder Include="Scripts\" />
-    <Folder Include="Templates\Configurations\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deployment.targets">
@@ -35,6 +34,8 @@
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
+    <None Include="Templates\Configurations\CreateADBDC.ps1.zip" />
+    <None Include="Templates\Configurations\CreateADPDC.ps1.zip" />
     <None Include="Templates\nic.json" />
     <None Include="Templates\vnet-with-dns-server.json" />
     <None Include="Templates\vnet.json" />

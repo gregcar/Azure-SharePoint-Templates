@@ -1,0 +1,82 @@
+﻿{
+  "SharePointServers": [
+    "bfsmlsp16-sp1",
+    "bfsmlsp16-sp2",
+    "bfsmlsp16-sp3",
+    "bfsmlsp16-sp4"
+  ],
+  "PublicIPs": [
+    "bfsmlsp16-sp-app1",
+    "bfsmlsp16-sp-app2",
+    "bfsmlsp16-sp-wfe1",
+    "bfsmlsp16-sp-wfe2"
+  ],
+  "NetworkInterfaces": [
+    "bfsmlsp16-sp1",
+    "bfsmlsp16-sp2",
+    "bfsmlsp16-sp3",
+    "bfsmlsp16-sp4"
+  ],
+  "Blobs": [
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP1-os.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP1-index.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP1-logs.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP2-os.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP2-index.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP2-logs.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP3-os.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP3-index.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP3-logs.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP4-os.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob": "bfsmlsp16-SP4-index.vhd"
+    },
+    {
+      "Account": "bfsmlsp16",
+      "Container": "vhds",
+      "Blob":  "bfsmlsp16-SP4-logs.vhd"
+    }
+  ]
+}

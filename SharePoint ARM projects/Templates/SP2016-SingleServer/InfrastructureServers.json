@@ -1,0 +1,365 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the service being provisioned"
+      }
+    },
+    "dscSasToken": {
+      "type": "string",
+      "metadata": {
+        "description": "The SAS token to use to access the DSC configurations"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name to give the storage account for the resource group"
+      }
+    },
+    "dscStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name to give the storage account for DSC configurations (must not be premium storage)"
+      }
+    },
+    "administratorAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the account used as the administrator on the servers"
+      }
+    },
+    "administratorPassword": {
+      "type": "string",
+      "metadata": {
+        "description": "The password used for all accounts generated in the domain"
+      }
+    },
+    "ADDomainName": {
+      "type": "string",
+      "metadata": {
+        "description": "The FQDN of the domain for the environment"
+      }
+    },
+    "NetBIOSName": {
+      "type": "string",
+      "metadata": {
+        "description": "The NETBIOS name to use for the domain"
+      }
+    },
+    "FarmPassphrase": {
+      "type": "string",
+      "metadata": {
+        "description": "The passphrase used to join the servers to the farm"
+      }
+    }
+  },
+  "variables": {
+    "VNetName": "[concat(parameters('ServiceName'),'Network')]",
+    "DCImageName": "a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201504.01-en.us-127GB.vhd",
+    "DCHostSize": "Standard_A2",
+    "DCDomainName": "[concat(parameters('ServiceName'),'-ad')]",
+    "DCName": "[concat(parameters('ServiceName'),'-AD1')]",
+    "DCNicName": "[concat(parameters('ServiceName'),'-AD1')]",
+    "DC1Disk1Name": "[concat(parameters('ServiceName'),'-AD1-os')]",
+    "DCDSCPackageName": "SP16-Single-AD.ps1",
+    "DCDSCPackagePath": "[concat('https://', parameters('dscStorageAccountName'),'.blob.core.windows.net/windows-powershell-dsc/', variables('DCDSCPackageName'), '.zip')]",
+    "SQLImageName": "fb83b3509582419d99629ce476bcb5c8__SQL-Server-20140SP1-12.0.4100.1-Ent-ENU-Win2012R2-cy15su05",
+    "SQLHostSize": "Standard_A4",
+    "SQLDomainName": "[concat(parameters('ServiceName'),'-sql')]",
+    "SQL1Name": "[concat(parameters('ServiceName'),'-SQL1')]",
+    "SQL1NicName": "[concat(parameters('ServiceName'),'-SQL1')]",
+    "SQL1Disk1Name": "[concat(parameters('ServiceName'),'-SQL1-os')]",
+    "SQLDSCPackageName": "SP16-Single-SQL.ps1",
+    "SQLDSCPackagePath": "[concat('https://', parameters('dscStorageAccountName'),'.blob.core.windows.net/windows-powershell-dsc/', variables('SQLDSCPackageName'), '.zip')]",
+    "SPDnsZoneName": "sharepoint"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('VNetName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "192.168.0.0/16"
+          ]
+        },
+        "dhcpOptions": {
+          "dnsServers": [
+            "192.168.0.4",
+            "8.8.8.8"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "Subnet-1",
+            "properties": {
+              "addressPrefix": "192.168.0.0/16"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('DCDomainName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('DCDomainName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('SQLDomainName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('SQLDomainName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('DCNicName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('DCDomainName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('VNetName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "192.168.0.4",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('DCDomainName'))]"
+              },
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',variables('VNetName')), '/subnets/Subnet-1')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('DCName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('DCNicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('DCHostSize')]"
+        },
+        "osProfile": {
+          "computername": "[variables('DCName')]",
+          "adminUsername": "[parameters('administratorAccount')]",
+          "adminPassword": "[parameters('administratorPassword')]",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2012-R2-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('DC1Disk1Name')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', variables('DC1Disk1Name'),'.vhd')]"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('DCNicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('DCName'),'/Microsoft.Powershell.DSC')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('DCName'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "1.10",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "ModulesUrl": "[variables('DCDSCPackagePath')]",
+          "ConfigurationFunction": "[concat(variables('DCDSCPackageName'), '\\ADServer')]",
+          "SasToken": "[parameters('dscSasToken')]",
+          "Properties": {
+            "CredSSPDelegates": "[concat('*.', parameters('ADDomainName'))]",
+            "domainAdminCredential": {
+              "UserName": "[parameters('administratorAccount')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "FQDN": "[parameters('ADDomainName')]",
+            "NetbiosName": "[parameters('NetBIOSName')]",
+            "SafemodeAdministratorPassword": {
+              "UserName": "[parameters('administratorAccount')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "serviceAccountCredential": {
+              "UserName": "[parameters('administratorAccount')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "SPDnsName": "[concat('*.', variables('SPDnsZoneName'))]",
+            "SPDnsTarget": "192.168.0.6"
+          }
+        },
+        "protectedSettings": {
+          "Items": {
+            "ADPassword": "[parameters('administratorPassword')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('SQL1NicName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('SQLDomainName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', variables('VNetName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "192.168.0.5",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('SQLDomainName'))]"
+              },
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',variables('VNetName')), '/subnets/Subnet-1')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('SQL1Name')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces',variables('SQL1NicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('SQLHostSize')]"
+        },
+        "osProfile": {
+          "computername": "[variables('SQL1Name')]",
+          "adminUsername": "[parameters('administratorAccount')]",
+          "adminPassword": "[parameters('administratorPassword')]",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true
+          }
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftSQLServer",
+            "offer": "SQL2014-WS2012R2",
+            "sku": "Enterprise",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('SQL1Disk1Name')]",
+            "caching": "ReadWrite",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', variables('SQL1Disk1Name'),'.vhd')]"
+            }
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('SQL1NicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('SQL1Name'),'/Microsoft.Powershell.DSC')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('SQL1Name'))]",
+        "[concat('Microsoft.Compute/virtualMachines/', variables('DCName'),'/extensions/Microsoft.Powershell.DSC')]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.6",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "ModulesUrl": "[variables('SQLDSCPackagePath')]",
+          "ConfigurationFunction": "[concat(variables('SQLDSCPackageName'), '\\SQLServer')]",
+          "SasToken": "[parameters('dscSasToken')]",
+          "Properties": {
+            "CredSSPDelegates": "[concat('*.', parameters('ADDomainName'))]",
+            "domainAdminCredential": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\', parameters('administratorAccount'))]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "DomainName": "[parameters('ADDomainName')]",
+            "InstallAccount": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\', parameters('administratorAccount'))]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "SPSetupAccount": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\svcSPSetup')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            }
+          }
+        },
+        "protectedSettings": {
+          "Items": {
+            "ADPassword": "[parameters('administratorPassword')]"
+          }
+        }
+      }
+    }
+  ]
+}

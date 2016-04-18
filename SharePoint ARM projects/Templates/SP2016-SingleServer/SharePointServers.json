@@ -1,0 +1,234 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the service being provisioned"
+      }
+    },
+    "dscSasToken": {
+      "type": "string",
+      "metadata": {
+        "description": "The SAS token to use to access the DSC configurations"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name to give the storage account for the resource group"
+      }
+    },
+    "dscStorageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name to give the storage account for DSC configurations (must not be premium storage)"
+      }
+    },
+    "administratorAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the account used as the administrator on the servers"
+      }
+    },
+    "administratorPassword": {
+      "type": "string",
+      "metadata": {
+        "description": "The password used for all accounts generated in the domain"
+      }
+    },
+    "ADDomainName": {
+      "type": "string",
+      "metadata": {
+        "description": "The FQDN of the domain for the environment"
+      }
+    },
+    "NetBIOSName": {
+      "type": "string",
+      "metadata": {
+        "description": "The NETBIOS name to use for the domain"
+      }
+    },
+    "FarmPassphrase": {
+      "type": "string",
+      "metadata": {
+        "description": "The passphrase used to join the servers to the farm"
+      }
+    }
+  },
+  "variables": {
+    "VNetName": "[concat(parameters('ServiceName'),'Network')]",
+    "SQL1Name": "[concat(parameters('ServiceName'),'-SQL1')]",
+    "SPHostSize": "Standard_A3",
+    "SPAppDomainName": "[concat(parameters('ServiceName'),'-sp')]",
+    "SP1Name": "[concat(parameters('ServiceName'),'-SP1')]",
+    "SP1NicName": "[concat(parameters('ServiceName'),'-SP1')]",
+    "SP1Disk1Name": "[concat(parameters('ServiceName'),'-SP1-os')]",
+    "SP1Disk2Name": "[concat(parameters('ServiceName'),'-SP1-logs')]",
+    "SP1Disk3Name": "[concat(parameters('ServiceName'),'-SP1-index')]",
+    "SPDnsZoneName": "sharepoint",
+    "SPFarmDSCPackageName": "SP16-Single-SharePoint.ps1",
+    "SPFarmDSCPackagePath": "[concat('https://', parameters('dscStorageAccountName'),'.blob.core.windows.net/windows-powershell-dsc/', variables('SPFarmDSCPackageName'), '.zip')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('SPAppDomainName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('SPAppDomainName')]"
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('SP1NicName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('SPAppDomainName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "192.168.0.6",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('SPAppDomainName'))]"
+              },
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks',variables('VNetName')), '/subnets/Subnet-1')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('SP1Name')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces',variables('SP1NicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[variables('SPHostSize')]"
+        },
+        "osProfile": { 
+          "computername": "[variables('SP1Name')]",
+          "adminUsername": "[parameters('administratorAccount')]",
+          "adminPassword": "[parameters('administratorPassword')]",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true
+          }
+        },
+        "storageProfile": {
+          "osDisk": {
+            "name": "[variables('SP1Disk1Name')]",
+            "caching": "ReadWrite",
+            "osType": "windows",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', variables('SP1Disk1Name'),'.vhd')]"
+            },
+            "image": {
+              "uri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/SharePoint-16.0.4316.1217.vhd')]"
+            }
+          },
+          "dataDisks": [
+            {
+              "vhd": {
+                "uri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', variables('SP1Disk2Name'),'.vhd')]"
+              },
+              "name": "[variables('SP1Disk2Name')]",
+              "caching": "None",
+              "createOption": "empty",
+              "diskSizeGB": "50",
+              "lun": 0
+            },
+            {
+              "vhd": {
+                "uri": "[concat('https://', parameters('storageAccountName'), '.blob.core.windows.net/vhds/', variables('SP1Disk3Name'),'.vhd')]"
+              },
+              "name": "[variables('SP1Disk3Name')]",
+              "caching": "None",
+              "createOption": "empty",
+              "diskSizeGB": "50",
+              "lun": 1
+            }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('SP1NicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('SP1Name'),'/Microsoft.Powershell.DSC')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('SP1Name'))]"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Powershell",
+        "type": "DSC",
+        "typeHandlerVersion": "2.6",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "ModulesUrl": "[variables('SPFarmDSCPackagePath')]",
+          "ConfigurationFunction": "[concat(variables('SPFarmDSCPackageName'), '\\SharePointServer')]",
+          "SasToken": "[parameters('dscSasToken')]",
+          "Properties": {
+            "CredSSPDelegates": "[concat('*.', parameters('ADDomainName'))]",
+            "domainAdminCredential": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\', parameters('administratorAccount'))]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "DomainName": "[parameters('ADDomainName')]",
+            "SPSetupAccount": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\svcSPSetup')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "FarmAccount": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\svcSPFarm')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "DatabaseServer": "[concat(variables('SQL1Name'), '.', parameters('ADDomainName'))]",
+            "FarmPassPhrase": "[parameters('FarmPassphrase')]",
+            "WebPoolManagedAccount": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\svcSPWebApp')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "ServicePoolManagedAccount": {
+              "UserName": "[concat(parameters('NetBIOSName'), '\\svcSPServiceApp')]",
+              "Password": "PrivateSettingsRef:ADPassword"
+            },
+            "WebAppUrl": "[concat('sites.',variables('SPDnsZoneName'),'.',parameters('ADDomainName'))]",
+            "MySiteHostUrl": "[concat('my.',variables('SPDnsZoneName'),'.',parameters('ADDomainName'))]",
+            "CacheSizeInMB": "1024"
+          }
+        },
+        "protectedSettings": {
+          "Items": {
+            "ADPassword": "[parameters('administratorPassword')]"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>988d4de6-8327-4dbe-b92d-9bbf9c5ad545</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <ItemGroup>
+    <Content Include="Templates\SP2013-SingleServer\SharePointServers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\SharePointServers.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\vmimage.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Configurations\SP13-SmlFarm-WFE2.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\SharePointServers.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\SharePointServers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\Configurations\SP16-Single-SQL.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\SharePointServers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\SharePointServers.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\storage.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\storage.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <None Include="Deployment.targets">
+      <Visible>False</Visible>
+    </None>
+    <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
+    <Content Include="Scripts\AzureSharePointDeploymentFunctions.ps1" />
+    <Content Include="Templates\SP2013-SingleServer\Storage.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\Storage.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Configurations\SP13-SmlFarm-AD.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Configurations\SP13-SmlFarm-App.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Configurations\SP13-SmlFarm-Farm.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Configurations\SP13-SmlFarm-SQL.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Configurations\SP13-SmlFarm-WFE1.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Storage.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\Storage.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\InfrastructureServers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\InfrastructureServers.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\Configurations\SP13-Single-AD.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\Configurations\SP13-Single-SharePoint.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\Configurations\SP13-Single-SQL.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SingleServer\vmimage.australiaeast.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\InfrastructureServers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\InfrastructureServers.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2013-SmallFarm\vmimage.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\InfrastructureServers.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\InfrastructureServers.parameters.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\Configurations\SP16-Single-AD.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\Configurations\SP16-Single-SharePoint.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\SP2016-SingleServer\vmimage.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <None Include="Scripts\Retract-AzureResourceGroup.ps1" />
+    <None Include="Scripts\Stop-AzureResourceGroupVMs.ps1" />
+    <None Include="Scripts\Start-AzureResourceGroupVMs.ps1" />
+    <None Include="Templates\SP2013-SingleServer\SharePointCleanup.json" />
+    <None Include="Templates\SP2013-SmallFarm\SharePointCleanup.json" />
+    <None Include="Templates\SP2016-SingleServer\SharePointCleanup.json" />
+    <None Include="Templates\SP2016-SmallFarm\Configurations\SP16-SmlFarm-AD.ps1" />
+    <None Include="Templates\SP2016-SmallFarm\Configurations\SP16-SmlFarm-App.ps1" />
+    <None Include="Templates\SP2016-SmallFarm\Configurations\SP16-SmlFarm-Farm.ps1" />
+    <None Include="Templates\SP2016-SmallFarm\Configurations\SP16-SmlFarm-SQL.ps1" />
+    <None Include="Templates\SP2016-SmallFarm\Configurations\SP16-SmlFarm-WFE1.ps1" />
+    <None Include="Templates\SP2016-SmallFarm\Configurations\SP16-SmlFarm-WFE2.ps1" />
+    <None Include="Templates\SP2016-SmallFarm\InfrastructureServers.json" />
+    <None Include="Templates\SP2016-SmallFarm\InfrastructureServers.parameters.json" />
+    <None Include="Templates\SP2016-SmallFarm\SharePointCleanup.json" />
+    <None Include="Templates\SP2016-SmallFarm\SharePointServers.json" />
+    <None Include="Templates\SP2016-SmallFarm\SharePointServers.parameters.json" />
+    <None Include="Templates\SP2016-SmallFarm\Storage.json" />
+    <None Include="Templates\SP2016-SmallFarm\Storage.parameters.json" />
+    <None Include="Templates\SP2016-SmallFarm\vmimage.json" />
+  </ItemGroup>
+  <Target Name="GetReferenceAssemblyPaths" />
+</Project>

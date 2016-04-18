@@ -1,0 +1,28 @@
+﻿{
+  "SharePointServers": [
+    "bflabsp16-sp1"
+  ],
+  "PublicIPs": [
+    "bflabsp16-sp"
+  ],
+  "NetworkInterfaces": [
+    "bflabsp16-sp1"
+  ],
+  "Blobs": [
+    {
+      "Account": "bflabsp16",
+      "Container": "vhds",
+      "Blob": "bflabsp16-SP1-os.vhd"
+    },
+    {
+      "Account": "bflabsp16",
+      "Container": "vhds",
+      "Blob": "bflabsp16-SP1-index.vhd"
+    },
+    {
+      "Account": "bflabsp16",
+      "Container": "vhds",
+      "Blob":  "bflabsp16-SP1-logs.vhd"
+    }
+  ]
+}

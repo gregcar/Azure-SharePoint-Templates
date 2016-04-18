@@ -41,7 +41,7 @@
       "metadata": {
         "description": "The name of the Virtual Network to Create"
       },
-      "defaultValue": "adVNET"
+      "defaultValue": "spFarmVnet"
     },
     "virtualNetworkAddressRange": {
       "type": "string",
@@ -226,6 +226,7 @@
     }
   },
   "variables": {
+    "configurationAssetLocation": "[concat(parameters('assetLocation'),'/Configurations/')]",
     "adLBFE": "LBFE",
     "adLBBE": "LBBE",
     "adPDCRDPNAT": "adPDCRDP",
@@ -248,9 +249,9 @@
     "vnetTemplateUri": "[concat(parameters('assetLocation'),'vnet.json')]",
     "nicTemplateUri": "[concat(parameters('assetLocation'),'nic.json')]",
     "vnetwithDNSTemplateUri": "[concat(parameters('assetLocation'),'vnet-with-dns-server.json')]",
-    "adPDCModulesURL": "[concat(parameters('assetLocation'),'CreateADPDC.ps1.zip')]",
+    "adPDCModulesURL": "[concat(variables('configurationAssetLocation'),'CreateADPDC.ps1.zip')]",
     "adPDCConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC",
-    "adBDCModulesURL": "[concat(parameters('assetLocation'),'CreateADBDC.ps1.zip')]",
+    "adBDCModulesURL": "[concat(variables('configurationAssetLocation'),'CreateADBDC.ps1.zip')]",
     "adBDCConfigurationFunction": "CreateADBDC.ps1\\CreateADBDC"
   },
   "resources": [

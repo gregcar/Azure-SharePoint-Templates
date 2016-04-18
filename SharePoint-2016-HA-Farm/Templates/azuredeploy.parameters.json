@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "newStorageAccountName": {
-      "value": "GEN-UNIQUE"
+      "value": "gcspt01"
     },
     "location": {
       "value": "East US"
@@ -12,13 +12,13 @@
       "value": "azureuser"
     },
     "adminPassword": {
-      "value": "GEN-PASSWORD"
+      "value": "Microsoft@123"
     },
     "adVMSize": {
       "value": "Standard_D2"
     },
     "dnsPrefix": {
-      "value": "GEN-UNIQUE"
+      "value": "gcsspt01"
     },
     "publicIPAddressName": {
       "value": "myPubIp"
@@ -27,7 +27,7 @@
       "value": "mydomain.local"
     },
     "assetLocation": {
-      "value": "https://github.com/gregcar/Azure-SharePoint-Templates/raw/master/SharePoint%202016%20HA%20Farm/"
+      "value": "https://raw.githubusercontent.com/gregcar/Azure-SharePoint-Templates/master/SharePoint-2016-HA-Farm/Templates/"
     }
   }
 }

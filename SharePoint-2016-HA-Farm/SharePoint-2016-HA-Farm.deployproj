@@ -45,6 +45,7 @@
     <None Include="Templates\Configurations\PrepareAlwaysOnSqlServer.ps1.zip" />
     <None Include="Templates\Configurations\PrepareFailoverCluster.ps1.zip" />
     <None Include="Templates\Configurations\PrepareFileShareWitness.ps1.zip" />
+    <None Include="Templates\Configurations\PrepareSharePointServerHA.ps1.zip" />
     <None Include="Templates\configuringBackupDomainController.json" />
     <None Include="Templates\configuringSharePoint.json" />
     <None Include="Templates\configuringSQLAlwaysOnCluster.json" />

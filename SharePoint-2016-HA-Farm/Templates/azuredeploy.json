@@ -226,7 +226,7 @@
         "description": "Base URL for Marketplace",
         "artifactsBaseUrl": ""
       },
-      "defaultValue": "https://raw.githubusercontent.com/gregcar/Azure-SharePoint-Templates/master/SharePoint-2016-HA-Farm/Templates/"
+      "defaultValue": "https://raw.githubusercontent.com/gregcar/Azure-SharePoint-Templates/master/SharePoint-2016-HA-Farm/Templates"
     }
    },
   "variables": {
@@ -287,7 +287,7 @@
       "sqlImageSKU": "Enterprise",
       "spImagePublisher": "MicrosoftSharePoint",
       "spImageOffer": "MicrosoftSharePointServer",
-      "spImageSKU": "2013",
+      "spImageSKU": "2016",
       "rdpPort": 3389,
       "spCentralAdminPort": 80,
       "windowsDiskSize": 128,
@@ -406,7 +406,7 @@
       "setupLBsUrl": "[concat(parameters('baseUrl'),'/setupLBs.json')]",
       "creatingNicsUrl": "[concat(parameters('baseUrl'),'/creatingNICS.json')]"
     },
-    "assetLocation": "https://raw.githubusercontent.com/gregcar/Azure-SharePoint-Templates/master/SharePoint-2016-HA-Farm/Templates/Configurations/"
+    "assetLocation": "https://raw.githubusercontent.com/gregcar/Azure-SharePoint-Templates/master/SharePoint-2016-HA-Farm/Templates/Configurations"
   },
    "resources":[
       {

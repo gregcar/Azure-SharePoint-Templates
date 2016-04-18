@@ -69,7 +69,7 @@
       "metadata": {
         "description": "The name of the NIC attached to the new PDC"
       },
-      "defaultValue": "adPDCNic"
+      "defaultValue": "DC01Nic01"
     },
     "adPDCNicIPAddress": {
       "type": "string",
@@ -83,7 +83,7 @@
       "metadata": {
         "description": "The name of the NIC attached to the new BDC"
       },
-      "defaultValue": "adBDCNic"
+      "defaultValue": "DC02Nic01"
     },
     "adBDCNicIPAddress": {
       "type": "string",
@@ -97,7 +97,7 @@
       "metadata": {
         "description": "The name of the public IP address used by the Load Balancer"
       },
-      "defaultValue": "adpublicIP"
+      "defaultValue": "DCPublicIP"
     },
     "publicIPAddressType": {
       "type": "string",
@@ -115,14 +115,14 @@
       "metadata": {
         "description": "The computer name of the PDC"
       },
-      "defaultValue": "adPDC"
+      "defaultValue": "DC01"
     },
     "adBDCVMName": {
       "type": "string",
       "metadata": {
         "description": "The computer name of the BDC"
       },
-      "defaultValue": "adBDC"
+      "defaultValue": "DC02"
     },
     "adminUsername": {
       "type": "string",
@@ -222,7 +222,7 @@
       "metadata": {
         "description": "The location of resources such as templates and DSC modules that the script is dependent"
       },
-      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/active-directory-new-domain-ha-2-dc/"
+      "defaultValue": "https://github.com/gregcar/Azure-SharePoint-Templates/raw/master/SharePoint%202016%20HA%20Farm/"
     }
   },
   "variables": {
@@ -242,8 +242,8 @@
     "adPDCRDPNATRuleID": "[concat(variables('adlbID'),'/inboundNatRules/',variables('adPDCRDPNAT'))]",
     "adBDCRDPNATRuleID": "[concat(variables('adlbID'),'/inboundNatRules/',variables('adBDCRDPNAT'))]",
     "adBEAddressPoolID": "[concat(variables('adlbID'),'/backendAddressPools/',variables('adLBBE'))]",
-    "adPDCDataDisk": "ADPDCDataDisk",
-    "adBDCDataDisk": "ADBDCDataDisk",
+    "adPDCDataDisk": "DC01DataDisk",
+    "adBDCDataDisk": "DC02CDataDisk",
     "adDataDiskSize": 1000,
     "vnetTemplateUri": "[concat(parameters('assetLocation'),'vnet.json')]",
     "nicTemplateUri": "[concat(parameters('assetLocation'),'nic.json')]",

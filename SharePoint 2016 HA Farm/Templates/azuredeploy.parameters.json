@@ -27,7 +27,7 @@
       "value": "mydomain.local"
     },
     "assetLocation": {
-      "value": "https://github.com/Azure/gregcar/raw/master/active-directory-new-domain-ha-2-dc/"
+      "value": "https://github.com/gregcar/Azure-SharePoint-Templates/raw/master/SharePoint%202016%20HA%20Farm/"
     }
   }
 }

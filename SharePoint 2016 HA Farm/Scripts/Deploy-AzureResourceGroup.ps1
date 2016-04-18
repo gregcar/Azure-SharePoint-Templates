@@ -3,15 +3,16 @@
 #Requires -Module Azure.Storage
 
 Param(
-    [string] [Parameter(Mandatory=$true)] $ResourceGroupLocation,
-    [string] $ResourceGroupName = 'AzureSharePointTemplates',
+    [string] $ResourceGroupLocation = 'eastus',
+    [string] $ResourceGroupName = 'SharePoint2016-Test01',
     [switch] $UploadArtifacts,
-    [string] $StorageAccountName,
+    [string] $StorageAccountName = 'gc-sp2016test01',
+	[string] $dnsPrefix = 'gcspt01',
     [string] $StorageContainerName = $ResourceGroupName.ToLowerInvariant() + '-stageartifacts',
     [string] $TemplateFile = '..\Templates\azuredeploy.json',
     [string] $TemplateParametersFile = '..\Templates\azuredeploy.parameters.json',
     [string] $ArtifactStagingDirectory = '..\bin\Debug\staging',
-    [string] $DSCSourceFolder = '..\DSC'
+    [string] $DSCSourceFolder = '..\Templates\Configurations\'
 )
 
 Import-Module Azure -ErrorAction SilentlyContinue

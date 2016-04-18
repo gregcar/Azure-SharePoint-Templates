@@ -21,7 +21,7 @@ function New-DscConfigurationsSasToken() {
         [string] [parameter(Mandatory = $false)] $ContainerName = 'windows-powershell-dsc',
         [int] [parameter(Mandatory = $false)] $Hours = 12
     )
-    $key = (Get-AzureStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $StorageAccountName).Key1
+    $key = (Get-AzureRMStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $StorageAccountName).Key1
     $context = New-AzureStorageContext -StorageAccountName $StorageAccountName -StorageAccountKey $key
     $sasToken = New-AzureStorageContainerSASToken -Name $ContainerName -Permission r -ExpiryTime ([System.DateTime]::Now.AddHours($Hours)) -Context $context
 
@@ -44,7 +44,7 @@ function Copy-AzureVMImageToStorageContainer() {
     )
 
     $srcContext = New-AzureStorageContext -StorageAccountName $SourceStorageAccountName -StorageAccountKey $SourceStorageAccountKey
-    $key = (Get-AzureStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $TargetStorageAccountName).Key1
+    $key = (Get-AzureRMStorageAccountKey -ResourceGroupName $ResourceGroupName -Name $TargetStorageAccountName).Key1
     $destContext = New-AzureStorageContext -StorageAccountName $TargetStorageAccountName -StorageAccountKey $key
 
     $container = Get-AzureStorageContainer -Name $TargetStorageAccountContainer -Context $destContext -ErrorAction SilentlyContinue

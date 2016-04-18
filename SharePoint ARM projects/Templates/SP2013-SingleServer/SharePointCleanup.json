@@ -1,28 +1,28 @@
 ﻿{
   "SharePointServers": [
-    "bflabsp13-sp1"
+    "gclabsp13-sp1"
   ],
   "PublicIPs": [
-    "bflabsp13-sp"
+    "gclabsp13-sp"
   ],
   "NetworkInterfaces": [
-    "bflabsp13-sp1"
+    "gclabsp13-sp1"
   ],
   "Blobs": [
     {
-      "Account": "bflabsp13",
+      "Account": "gclabsp13",
       "Container": "vhds",
-      "Blob": "bflabsp13-SP1-os.vhd"
+      "Blob": "gclabsp13-SP1-os.vhd"
     },
     {
-      "Account": "bflabsp13",
+      "Account": "gclabsp13",
       "Container": "vhds",
-      "Blob": "bflabsp13-SP1-index.vhd"
+      "Blob": "gclabsp13-SP1-index.vhd"
     },
     {
-      "Account": "bflabsp13",
+      "Account": "gclabsp13",
       "Container": "vhds",
-      "Blob":  "bflabsp13-SP1-logs.vhd"
+      "Blob":  "gclabsp13-SP1-logs.vhd"
     }
   ]
 }

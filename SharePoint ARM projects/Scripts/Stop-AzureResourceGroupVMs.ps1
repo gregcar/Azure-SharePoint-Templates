@@ -16,11 +16,11 @@ Write-Output -InputObject " Shutting down SharePoint Resource Group VMs"
 Write-Output -InputObject "**********************************************"
 Write-Output -InputObject "Resource Group: $ResourceGroupName"
 
+Login-AzureRmAccount
 
-Switch-AzureMode -Name AzureResourceManager
 $ErrorActionPreference = "Stop"
 
 Write-Output -InputObject "Task 1: Shutting down VMs"    
-Get-AzureVM -ResourceGroupName $ResourceGroupName | Stop-AzureVM -Force | Out-Null
+Get-AzureRmVM -ResourceGroupName $ResourceGroupName | Stop-AzureVM -Force | Out-Null
 
 Write-Output -InputObject "All VMs are now shutting down"    

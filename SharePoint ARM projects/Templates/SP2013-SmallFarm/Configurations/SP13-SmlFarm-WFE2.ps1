@@ -107,7 +107,7 @@ Configuration SharePointWFEServer
         WaitForAll WaitForFarmToExist
         {
             ResourceName         = "[xSPCreateFarm]CreateSPFarm"
-            NodeName             = "bfsmlsp13-sp1"
+            NodeName             = "gcsmlsp13-sp1"
             RetryIntervalSec     = 60
             RetryCount           = 20
             PsDscRunAsCredential = $SPSetupAccount
@@ -123,7 +123,7 @@ Configuration SharePointWFEServer
         WaitForAll WaitForDCache
         {
             ResourceName         = "[xSPDistributedCacheService]EnableDistributedCache"
-            NodeName             = "bfsmlsp13-sp3"
+            NodeName             = "gcsmlsp13-sp3"
             RetryIntervalSec     = 60
             RetryCount           = 60
             PsDscRunAsCredential = $SPSetupAccount

@@ -1,14 +1,14 @@
 ﻿#Requires -Version 3.0
 
 Param(
-  [string] [Parameter(Mandatory=$true)] $ResourceGroupLocation = 'southeastasia',
-  [string] [ValidateSet('SP2013-SingleServer','SP2013-SmallFarm','SP2016-SingleServer','SP2016-SmallFarm')] [Parameter(Mandatory=$true)] $ResourceGroupName,
+  [string] [Parameter(Mandatory=$false)] $ResourceGroupLocation = 'eastus',
+  [string] [ValidateSet('SP2013-SingleServer','SP2013-SmallFarm','SP2016-SingleServer','SP2016-SmallFarm')] [Parameter(Mandatory=$false)] $ResourceGroupName = 'SP2016-SmallFarm',
   [switch] $SharePointOnly
 )
 
-Switch-AzureMode -Name AzureResourceManager
 Clear-Host
 Import-Module -Name Azure -ErrorAction SilentlyContinue
+Import-Module -Name AzureRM -ErrorAction SilentlyContinue
 . "$PSScriptRoot\AzureSharePointDeploymentFunctions.ps1"
 $ErrorActionPreference = "Stop"
 
@@ -21,18 +21,19 @@ Write-Output -InputObject "Resource Group: $ResourceGroupName"
 Write-Output -InputObject "Region:         $ResourceGroupLocation"
 Write-Output -InputObject " "
 
+#Login-AzureRmAccount
+
+
 $storageSettings = Get-Content -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\storage.parameters.json" -Resolve) -Raw | ConvertFrom-Json
 
 if (-not $SharePointOnly) {
     Write-Output -InputObject "Task 1: Creating storage account"
     $ErrorActionPreference = "Stop"
-    New-AzureResourceGroup -Name $ResourceGroupName `
-                           -DeploymentName "StorageAccounts" `
-                           -Location $ResourceGroupLocation `
+    New-AzureRmResourceGroup -Name $ResourceGroupName -Location $ResourceGroupLocation
+    New-AzureRmResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
                            -TemplateFile (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\Storage.json" -Resolve) `
                            -TemplateParameterFile (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\Storage.parameters.json" -Resolve) `
                            -Verbose
-
 
     Start-Sleep -Seconds 60
 
@@ -43,17 +44,17 @@ if (-not $SharePointOnly) {
     Write-Output -InputObject "Task 3: Publishing DSC configurations"
     $ConfigurationPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\Configurations" -Resolve
     Get-ChildItem -Path $ConfigurationPath -File -Filter "*.ps1" | ForEach-Object {
-        Publish-AzureVMDscConfiguration -ResourceGroupName $ResourceGroupName -ConfigurationPath $_.FullName -StorageAccountName $storageSettings.parameters.dscStorageAccountName.value -Force | Out-Null
+        Publish-AzureRmVMDscConfiguration -ConfigurationPath $_.FullName -ResourceGroupName $ResourceGroupName -StorageAccountName $storageSettings.parameters.dscStorageAccountName.value -SkipDependencyDetection -Force
     }
 
     Write-Output -InputObject "Task 4: Launching common infrastructure VM provisioning"
 
-    New-AzureResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
+    New-AzureRMResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
                                      -Name "CommonInfrastructure" `
                                      -TemplateFile (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\InfrastructureServers.json" -Resolve) `
                                      -TemplateParameterFile (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\InfrastructureServers.parameters.json" -Resolve) `
                                      -dscSasToken (New-DscConfigurationsSasToken -ResourceGroupName $ResourceGroupName -StorageAccountName $storageSettings.parameters.dscStorageAccountName.value) `
-                                     -storageAccountNameFromTemplate $storageSettings.parameters.primaryStorageAccountName.value `
+                                     -StorageAccountName $storageSettings.parameters.primaryStorageAccountName.value `
                                      -dscStorageAccountName $storageSettings.parameters.dscStorageAccountName.value `
                                      -Verbose 
 
@@ -71,12 +72,12 @@ if (-not $SharePointOnly) {
     Write-Output -InputObject "Task 2: Provisioning SharePoint Servers"
 }
 
-New-AzureResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
+New-AzureRMResourceGroupDeployment -ResourceGroupName $ResourceGroupName `
                                  -Name "SharePointServers" `
                                  -TemplateFile (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\SharePointServers.json" -Resolve) `
                                  -TemplateParameterFile (Join-Path -Path $PSScriptRoot -ChildPath "..\Templates\$ResourceGroupName\SharePointServers.parameters.json" -Resolve) `
                                  -dscSasToken (New-DscConfigurationsSasToken -ResourceGroupName $ResourceGroupName -StorageAccountName $storageSettings.parameters.dscStorageAccountName.value) `
-                                 -storageAccountNameFromTemplate $storageSettings.parameters.primaryStorageAccountName.value `
+                                 -StorageAccountName $storageSettings.parameters.primaryStorageAccountName.value `
                                  -dscStorageAccountName $storageSettings.parameters.dscStorageAccountName.value `
                                  -Verbose 
 

@@ -16,11 +16,11 @@ Write-Output -InputObject "   Booting up SharePoint Resource Group VMs"
 Write-Output -InputObject "**********************************************"
 Write-Output -InputObject "Resource Group: $ResourceGroupName"
 
+Login-AzureRmAccount
 
-Switch-AzureMode -Name AzureResourceManager
 $ErrorActionPreference = "Stop"
 
 Write-Output -InputObject "Task 1: Booting up VMs"    
-Get-AzureVM -ResourceGroupName $ResourceGroupName | Start-AzureVM | Out-Null
+Get-AzureRmVM -ResourceGroupName $ResourceGroupName | Start-AzureVM | Out-Null
 
 Write-Output -InputObject "All VMs are now booting up"    

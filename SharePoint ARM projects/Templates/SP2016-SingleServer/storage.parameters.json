@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "primaryStorageAccountName": {
-      "value": "bflabsp16"
+      "value": "gclabsp16"
     },
     "dscStorageAccountName": {
-      "value": "bflabsp16dsc"
+      "value": "gclabsp16dsc"
     }
   }
 }

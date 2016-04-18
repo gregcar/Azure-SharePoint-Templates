@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serviceName": {
-      "value": "bfsmlsp16"
+      "value": "gcsmlsp16"
     },
     "administratorAccount": {
       "value": "Brian"

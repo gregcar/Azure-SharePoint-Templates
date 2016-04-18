@@ -124,7 +124,7 @@ Configuration SharePointWFEServer
         WaitForAll WaitForDCache
         {
             ResourceName         = "[xSPDistributedCacheService]EnableDistributedCache"
-            NodeName             = "bfsmlsp16-sp3"
+            NodeName             = "gcsmlsp16-sp3"
             RetryIntervalSec     = 60
             RetryCount           = 60
             PsDscRunAsCredential = $SPSetupAccount

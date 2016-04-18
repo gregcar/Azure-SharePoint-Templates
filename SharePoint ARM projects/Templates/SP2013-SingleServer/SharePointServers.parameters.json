@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "serviceName": {
-      "value": "bflabsp13"
+      "value": "gclabsp13"
     },
     "administratorAccount": {
       "value": "Brian"

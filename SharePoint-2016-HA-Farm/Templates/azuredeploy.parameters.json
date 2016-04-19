@@ -1,69 +1,72 @@
 ﻿{
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "location" : {
-            "value" :"eastus"
-        },
-        "adminUsername": {
-            "value": "azurespadmin"
-        },
-        "adminPassword": {
-            "value" : "Microsoft@123"
-        },
-        "sharepointFarmName" : {
-            "value":"SharepointFarm"
-        },
-        "sqlServerServiceAccountUserName":{
-            "value": "sqlservice"
-        },
-      "sqlServerServiceAccountPassword": {
-        "value": "7d@HvxfJz8pkk2_PeeMR"
-      },
-        "sharePointSetupUserAccountUserName":{
-            "value": "spsetup"
-        },
-      "sharePointSetupUserAccountPassword": {
-        "value": "sf5PD44X@#kP9GjjLYwB"
-      },
-        "sharePointFarmAccountPassword":{
-            "value": "Admin123sp!farm"
-        },
-      "sharePointFarmPassphrasePassword": {
-        "value": "Z^z&Qk5?qMBK+qq9WnzN"
-      },
-        "spWebIPRGName" : {
-            "value" : "SharePoint2016-Test01"
-        },
-        "spWebIPAddressName" : {
-            "value" : "spWebIp"
-        },
-        "spWebIPNewOrExisting": {
-            "value" : "new"
-        },
-        "dnsPrefix": {
-            "value" : "gcsp01dns"
-        },
-        "storageAccountNamePrefix": {
-            "value": "gcsp01str"
-        },
-        "storageAccountType": {
-            "value" : "Premium_LRS"
-        },
-        "adVMSize" : {
-            "value" : "Standard_DS1"
-        },
-        "sqlVMSize" : {
-            "value" : "Standard_DS3"
-        },
-        "witnessVMSize" : {
-            "value" : "Standard_DS1"
-        },
-        "spVMSize" : {
-            "value" : "Standard_DS3"
-        },
-        "domainName":{
-            "value":"contoso.local"
-        }
+  "parameters": {
+    "location": {
+      "value": "eastus"
+    },
+    "adminUsername": {
+      "value": "azurespadmin"
+    },
+    "adminPassword": {
+      "value": "Microsoft@123"
+    },
+    "sharepointFarmName": {
+      "value": "SharepointFarm"
+    },
+    "sqlServerServiceAccountUserName": {
+      "value": "sqlservice"
+    },
+    "sqlServerServiceAccountPassword": {
+      "value": "7d@HvxfJz8pkk2_PeeMR"
+    },
+    "sharePointSetupUserAccountUserName": {
+      "value": "spsetup"
+    },
+    "sharePointSetupUserAccountPassword": {
+      "value": "sf5PD44X@#kP9GjjLYwB"
+    },
+    "sharePointFarmAccountUserName": {
+      "value": "spfarm"
+    },
+    "sharePointFarmAccountPassword": {
+      "value": "Admin123sp!farm"
+    },
+    "sharePointFarmPassphrasePassword": {
+      "value": "Z^z&Qk5?qMBK+qq9WnzN"
+    },
+    "spWebIPRGName": {
+      "value": "SharePoint2016-Test01"
+    },
+    "spWebIPAddressName": {
+      "value": "spWebIp"
+    },
+    "spWebIPNewOrExisting": {
+      "value": "new"
+    },
+    "dnsPrefix": {
+      "value": "gcsp01dns"
+    },
+    "storageAccountNamePrefix": {
+      "value": "gcsp01str"
+    },
+    "storageAccountType": {
+      "value": "Premium_LRS"
+    },
+    "adVMSize": {
+      "value": "Standard_DS1"
+    },
+    "sqlVMSize": {
+      "value": "Standard_DS3"
+    },
+    "witnessVMSize": {
+      "value": "Standard_DS1"
+    },
+    "spVMSize": {
+      "value": "Standard_DS3"
+    },
+    "domainName": {
+      "value": "contoso.local"
     }
+  }
 }

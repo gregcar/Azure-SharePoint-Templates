@@ -26,7 +26,6 @@
   <!-- vertag<:>end -->
   <ItemGroup>
     <Folder Include="Scripts\" />
-    <Folder Include="Source\ConfigureSharePointServerHA.ps1\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Deployment.targets">
@@ -35,6 +34,49 @@
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\cConfigureSharepoint.psd1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSharepoint\SAMPLE_cConfigureSharepoint.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSharepoint\SAMPLE_cConfigureSharepoint.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSPSDBDFailover\SAMPLE_cConfigureSPSDBDFailover.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSPSDBDFailover\SAMPLE_cConfigureSPSDBDFailover.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\ConfigureSharePointServerHA.ps1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\PowerShellTools.MSI" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\SharedManagementObjects.msi" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\SharePointServer.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\SQLSysClrTypes.msi" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADDomainController\MSFT_xADDomainController.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADDomainController\MSFT_xADDomainController.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADDomainTrust\MSFT_xADDomainTrust.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADDomainTrust\MSFT_xADDomainTrust.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADDomain\MSFT_xADDomain.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADDomain\MSFT_xADDomain.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADUser\MSFT_xADUser.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xADUser\MSFT_xADUser.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xWaitForADDomain\MSFT_xWaitForADDomain.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\DSCResources\MSFT_xWaitForADDomain\MSFT_xWaitForADDomain.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\xActiveDirectory.psd1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xActiveDirectory\xActiveDirectory_TechNetDocumentation.html" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xComputerManagement\DSCResources\MSFT_xComputer\MSFT_xComputer.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xComputerManagement\DSCResources\MSFT_xComputer\MSFT_xComputer.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xComputerManagement\Ms-LPL_2010.docx" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xComputerManagement\xComputerManagement.psd1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xComputerManagement\xComputerManagement_Documentation.html" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xComputerManagement\_PSGetItemInfo.xml" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSQLAddListenerIPToDNS\MicrosoftAzure_xSQLAddListenerIPToDNS.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSQLAddListenerIPToDNS\MicrosoftAzure_xSQLAddListenerIPToDNS.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroupListener\MicrosoftAzure_xSqlAvailabilityGroupListener.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroupListener\MicrosoftAzure_xSqlAvailabilityGroupListener.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroup\MicrosoftAzure_xSqlAvailabilityGroup.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlAvailabilityGroup\MicrosoftAzure_xSqlAvailabilityGroup.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlEndpoint\MicrosoftAzure_xSqlEndpoint.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlEndpoint\MicrosoftAzure_xSqlEndpoint.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlLogin\MicrosoftAzure_xSqlLogin.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlLogin\MicrosoftAzure_xSqlLogin.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlNewAGDatabase\MicrosoftAzure_xSqlNewAGDatabase.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlNewAGDatabase\MicrosoftAzure_xSqlNewAGDatabase.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlServer\MicrosoftAzure_xSqlServer.psm1" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\DSCResources\MicrosoftAzure_xSqlServer\MicrosoftAzure_xSqlServer.schema.mof" />
+    <None Include="Source\ConfigureSharePointServerHA.ps1\xSQL\xSql.psd1" />
     <None Include="Templates\availabilitySets.json" />
     <None Include="Templates\Configurations\ConfigureADBDC.ps1.zip" />
     <None Include="Templates\Configurations\ConfigureAlwaysOnSqlServer.ps1.zip" />

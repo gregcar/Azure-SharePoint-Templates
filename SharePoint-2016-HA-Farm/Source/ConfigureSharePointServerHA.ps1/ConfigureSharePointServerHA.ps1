@@ -80,6 +80,7 @@ configuration ConfigureSharePointServerHA
             LocalConfigurationManager
             {
                 RebootNodeIfNeeded = $true
+				DebugMode = "All"
             }
 
             xWaitForADDomain DscForestWait
@@ -117,19 +118,19 @@ configuration ConfigureSharePointServerHA
                 DependsOn = "[xComputer]DomainJoin"
             }
 
-            cConfigureSharepoint ConfigureSharepointServer
-            {
-                DomainName=$DomainName
-                DomainAdministratorCredential=$DomainCreds
-                DatabaseName=$DatabaseName
-                AdministrationContentDatabaseName=$AdministrationContentDatabaseName
-                DatabaseServer=$DatabaseServer
-                SetupUserAccountCredential=$SPsetupCreds
-                FarmAccountCredential=$SharePointFarmAccountcreds
-                FarmPassphrase=$SharePointFarmPassphrasecreds
-                Configuration=$Configuration
-                DependsOn = "[xADUser]CreateFarmAccount", "[Group]AddSetupUserAccountToLocalAdminsGroup"
-            }
+            #cConfigureSharepoint ConfigureSharepointServer
+            #{
+            #    DomainName=$DomainName
+            #    DomainAdministratorCredential=$DomainCreds
+            #    DatabaseName=$DatabaseName
+            #    AdministrationContentDatabaseName=$AdministrationContentDatabaseName
+            #    DatabaseServer=$DatabaseServer
+            #    SetupUserAccountCredential=$SPsetupCreds
+            #    FarmAccountCredential=$SharePointFarmAccountcreds
+            #    FarmPassphrase=$SharePointFarmPassphrasecreds
+            #    Configuration=$Configuration
+            #    DependsOn = "[xADUser]CreateFarmAccount", "[Group]AddSetupUserAccountToLocalAdminsGroup"
+            #}
 
             # These packages should really only be installed on one server but they only take seconds to install and dont require a reboot
 
@@ -152,20 +153,20 @@ configuration ConfigureSharePointServerHA
 
             # This does nothing if Databasenames is null
 
-            xSqlNewAGDatabase SQLAGDatabases
-            {
-                SqlAlwaysOnAvailabilityGroupName = $SqlAlwaysOnAvailabilityGroupName
-                DatabaseNames = $DatabaseNames
-                PrimaryReplica = $PrimaryReplica
-                SecondaryReplica = $SecondaryReplica
-                SqlAdministratorCredential = $SQLCreds
-            }
-            cConfigureSPSDBDFailover UpdateSPFailover
-            {
-                DatabaseNames = $DatabaseNames
-                FailoverServerInstance = $SecondaryReplica
-                SharePointSetupUserAccountcreds=  $SPsetupCreds
-            }
+            #xSqlNewAGDatabase SQLAGDatabases
+            #{
+            #    SqlAlwaysOnAvailabilityGroupName = $SqlAlwaysOnAvailabilityGroupName
+            #    DatabaseNames = $DatabaseNames
+            #    PrimaryReplica = $PrimaryReplica
+            #    SecondaryReplica = $SecondaryReplica
+            #    SqlAdministratorCredential = $SQLCreds
+            #}
+            #cConfigureSPSDBDFailover UpdateSPFailover
+            #{
+            #    DatabaseNames = $DatabaseNames
+            #    FailoverServerInstance = $SecondaryReplica
+            #    SharePointSetupUserAccountcreds=  $SPsetupCreds
+            #}
         }
 
 }

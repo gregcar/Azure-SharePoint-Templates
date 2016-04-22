@@ -3,8 +3,8 @@
 #Requires -Module Azure.Storage
 
 Param(
-    [string] $ResourceGroupLocation = 'eastus',
-    [string] $ResourceGroupName = 'SharePoint2016-Test03',
+    [string] $ResourceGroupLocation = 'southcentralus',
+    [string] $ResourceGroupName = 'SharePoint2016-Test05',
     [switch] $UploadArtifacts,
     [string] $StorageAccountName = 'gc-sp2016test01',
 	[string] $dnsPrefix = 'gcspt01',

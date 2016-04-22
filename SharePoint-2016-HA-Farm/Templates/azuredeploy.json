@@ -992,9 +992,7 @@
       "dependsOn": [
         "Microsoft.Resources/deployments/CreatingStorageAccounts",
         "Microsoft.Resources/deployments/CreatingNetworkInterfaces",
-        "Microsoft.Resources/deployments/CreatingAvailabilitySets",
-        "Microsoft.Resources/deployments/ProvisioningBackupADDomainController",
-        "Microsoft.Resources/deployments/UpdatingDNStoPrimaryADVM"
+        "Microsoft.Resources/deployments/CreatingAvailabilitySets"
       ],
       "properties": {
         "mode": "Incremental",

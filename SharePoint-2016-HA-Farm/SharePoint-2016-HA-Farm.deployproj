@@ -34,11 +34,6 @@
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
     <Content Include="Templates\azuredeploy.json" />
     <Content Include="Templates\azuredeploy.parameters.json" />
-    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\cConfigureSharepoint.psd1" />
-    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSharepoint\SAMPLE_cConfigureSharepoint.psm1" />
-    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSharepoint\SAMPLE_cConfigureSharepoint.schema.mof" />
-    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSPSDBDFailover\SAMPLE_cConfigureSPSDBDFailover.psm1" />
-    <None Include="Source\ConfigureSharePointServerHA.ps1\cConfigureSharepoint\DSCResources\SAMPLE_cConfigureSPSDBDFailover\SAMPLE_cConfigureSPSDBDFailover.schema.mof" />
     <None Include="Source\ConfigureSharePointServerHA.ps1\ConfigureSharePointServerHA.ps1" />
     <None Include="Source\ConfigureSharePointServerHA.ps1\PowerShellTools.MSI" />
     <None Include="Source\ConfigureSharePointServerHA.ps1\SharedManagementObjects.msi" />

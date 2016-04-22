@@ -1,8 +1,0 @@
-[ClassVersion("1.0"), FriendlyName("cConfigureSPSDBDFailover")]
-class SAMPLE_cConfigureSPSDBDFailover : OMI_BaseResource
-{
-[write] string DatabaseNames[];
-[key] string FailoverServerInstance;
-[Required,EmbeddedInstance("MSFT_Credential")] string SharePointSetupUserAccountcreds;
-
-};

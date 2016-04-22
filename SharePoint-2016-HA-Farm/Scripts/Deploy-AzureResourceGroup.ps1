@@ -4,7 +4,7 @@
 
 Param(
     [string] $ResourceGroupLocation = 'eastus2',
-    [string] $ResourceGroupName = 'SharePoint2016-Test02',
+    [string] $ResourceGroupName = 'SharePoint2016-Test01',
     [switch] $UploadArtifacts,
     [string] $StorageAccountName = 'gc-sp2016test01',
 	[string] $dnsPrefix = 'gcspt01',

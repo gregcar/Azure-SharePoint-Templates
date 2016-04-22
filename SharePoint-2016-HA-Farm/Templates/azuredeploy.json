@@ -985,103 +985,105 @@
             }
          }
       },
-      {
-         "name":"ProvisioningSQLVirtualMachines",
-         "type":"Microsoft.Resources/deployments",
-         "apiVersion":"2015-01-01",
-         "dependsOn":[
-            "Microsoft.Resources/deployments/CreatingStorageAccounts",
-            "Microsoft.Resources/deployments/CreatingNetworkInterfaces",
-            "Microsoft.Resources/deployments/CreatingAvailabilitySets"
-         ],
-         "properties":{
-            "mode":"Incremental",
-            "templateLink":{
-               "uri":"[variables('configuration').provisioningSQLVMsURL]",
-               "contentVersion":"1.0.0.0"
-            },
-            "parameters":{
-               "sqlVMName":{
-                  "value":"[variables('vmSettings').sqlVMName]"
-               },
-               "location":{
-                  "value":"[parameters('location')]"
-               },
-               "storageAccountNamePrefix":{
-                  "value":"[parameters('storageAccountNamePrefix')]"
-               },
-               "availabilitySet":{
-                  "value":"[variables('ids').sqlAvailabilitySetName]"
-               },
-               "sqlVMSize":{
-                  "value":"[parameters('sqlVMSize')]"
-               },
-               "adminUsername":{
-                  "value":"[parameters('adminUsername')]"
-               },
-               "adminPassword":{
-                  "value":"[parameters('adminPassword')]"
-               },
-               "windowsImagePublisher":{
-                  "value":"[variables('vmSettings').windowsImagePublisher]"
-               },
-               "windowsImageOffer":{
-                  "value":"[variables('vmSettings').windowsImageOffer]"
-               },
-               "windowsImageSKU":{
-                  "value":"[variables('vmSettings').windowsImageSKU]"
-               },
-               "vmContainerName":{
-                  "value":"[variables('vmSettings').vmContainerName]"
-               },
-               "sqlImagePublisher":{
-                  "value":"[variables('vmSettings').sqlImagePublisher]"
-               },
-               "sqlImageOffer":{
-                  "value":"[variables('vmSettings').sqlImageOffer]"
-               },
-               "sqlImageSKU":{
-                  "value":"[variables('vmSettings').sqlImageSKU]"
-               },
-               "domainName":{
-                  "value":"[parameters('domainName')]"
-               },
-               "sqlAOPrepareModulesURL":{
-                  "value":"[variables('configuration').sqlAOPrepareModulesURL]"
-               },
-               "sqlAOPrepareFunction":{
-                  "value":"[variables('configuration').sqlAOPrepareFunction]"
-               },
-               "prepareClusterModulesURL":{
-                  "value":"[variables('configuration').prepareClusterModulesURL]"
-               },
-               "prepareClusterConfigurationFunction":{
-                  "value":"[variables('configuration').prepareClusterConfigurationFunction]"
-               },
-               "sharePath":{
-                  "value":"[variables('sharePath')]"
-               },
-               "witnessVMSize":{
-                  "value":"[parameters('witnessVMSize')]"
-               },
-               "sqlwVMName":{
-                  "value":"[variables('vmSettings').sqlwVMName]"
-               },
-               "sqlwNicName":{
-                  "value":"[variables('sqlwNicName')]"
-               },
-               "fswPreparationModulesURL":{
-                  "value":"[variables('configuration').fswPreparationModulesURL]"
-               },
-               "fswPreparationFunction":{
-                  "value":"[variables('configuration').fswPreparationFunction]"
-               },
-               "DNSServer":{
-                  "value":"[parameters('adPDCNICIPAddress')]"
-               }
-            }
-         }
-      },
+    {
+      "name": "ProvisioningSQLVirtualMachines",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/CreatingStorageAccounts",
+        "Microsoft.Resources/deployments/CreatingNetworkInterfaces",
+        "Microsoft.Resources/deployments/CreatingAvailabilitySets",
+        "Microsoft.Resources/deployments/ProvisioningBackupADDomainController",
+        "Microsoft.Resources/deployments/UpdatingDNStoPrimaryADVM"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('configuration').provisioningSQLVMsURL]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "sqlVMName": {
+            "value": "[variables('vmSettings').sqlVMName]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "storageAccountNamePrefix": {
+            "value": "[parameters('storageAccountNamePrefix')]"
+          },
+          "availabilitySet": {
+            "value": "[variables('ids').sqlAvailabilitySetName]"
+          },
+          "sqlVMSize": {
+            "value": "[parameters('sqlVMSize')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "windowsImagePublisher": {
+            "value": "[variables('vmSettings').windowsImagePublisher]"
+          },
+          "windowsImageOffer": {
+            "value": "[variables('vmSettings').windowsImageOffer]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('vmSettings').windowsImageSKU]"
+          },
+          "vmContainerName": {
+            "value": "[variables('vmSettings').vmContainerName]"
+          },
+          "sqlImagePublisher": {
+            "value": "[variables('vmSettings').sqlImagePublisher]"
+          },
+          "sqlImageOffer": {
+            "value": "[variables('vmSettings').sqlImageOffer]"
+          },
+          "sqlImageSKU": {
+            "value": "[variables('vmSettings').sqlImageSKU]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "sqlAOPrepareModulesURL": {
+            "value": "[variables('configuration').sqlAOPrepareModulesURL]"
+          },
+          "sqlAOPrepareFunction": {
+            "value": "[variables('configuration').sqlAOPrepareFunction]"
+          },
+          "prepareClusterModulesURL": {
+            "value": "[variables('configuration').prepareClusterModulesURL]"
+          },
+          "prepareClusterConfigurationFunction": {
+            "value": "[variables('configuration').prepareClusterConfigurationFunction]"
+          },
+          "sharePath": {
+            "value": "[variables('sharePath')]"
+          },
+          "witnessVMSize": {
+            "value": "[parameters('witnessVMSize')]"
+          },
+          "sqlwVMName": {
+            "value": "[variables('vmSettings').sqlwVMName]"
+          },
+          "sqlwNicName": {
+            "value": "[variables('sqlwNicName')]"
+          },
+          "fswPreparationModulesURL": {
+            "value": "[variables('configuration').fswPreparationModulesURL]"
+          },
+          "fswPreparationFunction": {
+            "value": "[variables('configuration').fswPreparationFunction]"
+          },
+          "DNSServer": {
+            "value": "[parameters('adPDCNICIPAddress')]"
+          }
+        }
+      }
+    },
       {
          "name":"ConfiguringSQLAlwaysOnCluster",
          "type":"Microsoft.Resources/deployments",

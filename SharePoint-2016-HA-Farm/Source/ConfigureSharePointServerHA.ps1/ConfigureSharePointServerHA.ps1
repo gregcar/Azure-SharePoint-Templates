@@ -128,56 +128,56 @@ configuration ConfigureSharePointServerFarm
                 DependsOn = "[xComputer]DomainJoin"
             }
 
-			if ($FirstFarmMember = "true") {
-				xSPCreateFarm CreateSPFarm
-				{
-					DatabaseServer           = $DatabaseServer
-					FarmConfigDatabaseName   = $DatabaseNames[1]
-					Passphrase               = $SharePointFarmPassphrasecreds
-					FarmAccount              = $FarmCreds
-					InstallAccount           = $SPsetupCreds
-					AdminContentDatabaseName = $AdministrationContentDatabaseName
-					DependsOn                = "[xSPInstall]InstallSharePoint"
-				}
+			#if ($FirstFarmMember = "true") {
+			#	xSPCreateFarm CreateSPFarm
+			#	{
+			#		DatabaseServer           = $DatabaseServer
+			#		FarmConfigDatabaseName   = $DatabaseNames[1]
+			#		Passphrase               = $SharePointFarmPassphrasecreds
+			#		FarmAccount              = $FarmCreds
+			#		InstallAccount           = $SPsetupCreds
+			#		AdminContentDatabaseName = $AdministrationContentDatabaseName
+			#		DependsOn                = "[xSPInstall]InstallSharePoint"
+			#	}
 
-				$FarmWaitTask = "[xSPCreateFarm]CreateSPFarm"
+			#	$FarmWaitTask = "[xSPCreateFarm]CreateSPFarm"
 
-				Package SQLCLRTypes
-				{
-					Ensure = 'Present'
-					Path  =  $SQLCLRPath
-					Name = 'Microsoft System CLR Types for SQL Server 2012 (x64)'
-					ProductId = 'F1949145-EB64-4DE7-9D81-E6D27937146C'
-					Credential= $Admincreds
-				}
-				Package SharedManagementObjects
-				{
-					Ensure = 'Present'
-					Path  = $SMOPath
-					Name = 'Microsoft SQL Server 2012 Management Objects  (x64)'
-					ProductId = 'FA0A244E-F3C2-4589-B42A-3D522DE79A42'
-					Credential = $Admincreds
-				}
-			} else {
-				WaitForAll WaitForFarmToExist
-				{
-					ResourceName         = "[xSPCreateFarm]CreateSPFarm"
-					NodeName             = "sps-app-0"
-					RetryIntervalSec     = 60
-					RetryCount           = 60
-					PsDscRunAsCredential = $SPsetupCreds
-				}
-				xSPJoinFarm JoinSPFarm
-				{
-					DatabaseServer           = $DatabaseServer
-					FarmConfigDatabaseName   = $DatabaseNames[1]
-					Passphrase               = $SharePointFarmPassphrasecreds
-					InstallAccount           = $SPsetupCreds
-					DependsOn                = "[WaitForAll]WaitForFarmToExist"
-				}
+			#	Package SQLCLRTypes
+			#	{
+			#		Ensure = 'Present'
+			#		Path  =  $SQLCLRPath
+			#		Name = 'Microsoft System CLR Types for SQL Server 2012 (x64)'
+			#		ProductId = 'F1949145-EB64-4DE7-9D81-E6D27937146C'
+			#		Credential= $Admincreds
+			#	}
+			#	Package SharedManagementObjects
+			#	{
+			#		Ensure = 'Present'
+			#		Path  = $SMOPath
+			#		Name = 'Microsoft SQL Server 2012 Management Objects  (x64)'
+			#		ProductId = 'FA0A244E-F3C2-4589-B42A-3D522DE79A42'
+			#		Credential = $Admincreds
+			#	}
+			#} else {
+			#	WaitForAll WaitForFarmToExist
+			#	{
+			#		ResourceName         = "[xSPCreateFarm]CreateSPFarm"
+			#		NodeName             = "sps-app-0"
+			#		RetryIntervalSec     = 60
+			#		RetryCount           = 60
+			#		PsDscRunAsCredential = $SPsetupCreds
+			#	}
+			#	xSPJoinFarm JoinSPFarm
+			#	{
+			#		DatabaseServer           = $DatabaseServer
+			#		FarmConfigDatabaseName   = $DatabaseNames[1]
+			#		Passphrase               = $SharePointFarmPassphrasecreds
+			#		InstallAccount           = $SPsetupCreds
+			#		DependsOn                = "[WaitForAll]WaitForFarmToExist"
+			#	}
 
-				$FarmWaitTask = "[xSPJoinFarm]JoinSPFarm"
-			}
+			#	$FarmWaitTask = "[xSPJoinFarm]JoinSPFarm"
+			#}
 
             cConfigureSharepoint ConfigureSharepointServer
             {

@@ -10,6 +10,9 @@ configuration ConfigureSharePointServerHA
         [Parameter(Mandatory)]
         [String]$DomainName,
 
+		[Parameter(Mandatory)]
+        [String]$FirstFarmMember,
+
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCredential]$Admincreds,
 
@@ -58,21 +61,21 @@ configuration ConfigureSharePointServerHA
         [System.Management.Automation.PSCredential]$SQLCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($SQLServiceCreds.UserName)", $SQLServiceCreds.Password)
 
         # Install Sharepoint Module
-        $ModuleFilePath="$PSScriptRoot\SharePointServer.psm1"
-        $ModuleName = "SharepointServer"
-        $PSModulePath = $Env:PSModulePath -split ";" | Select -Index 1
-        $ModuleFolder = "$PSModulePath\$ModuleName"
-        if (-not (Test-Path  $ModuleFolder -PathType Container)) {
-            mkdir $ModuleFolder
-        }
-        Copy-Item $ModuleFilePath $ModuleFolder -Force
+        # $ModuleFilePath="$PSScriptRoot\SharePointServer.psm1"
+        # $ModuleName = "SharepointServer"
+        # $PSModulePath = $Env:PSModulePath -split ";" | Select -Index 1
+        # $ModuleFolder = "$PSModulePath\$ModuleName"
+        #if (-not (Test-Path  $ModuleFolder -PathType Container)) {
+        #    mkdir $ModuleFolder
+        #}
+        #Copy-Item $ModuleFilePath $ModuleFolder -Force
 
 
         $SQLCLRPath="${PSScriptRoot}\SQLSysClrTypes.msi"
         $SMOPath="${PSScriptRoot}\SharedManagementObjects.msi"
         $SQLPSPath="${PSScriptRoot}\PowerShellTools.msi"
 
-        Import-DscResource -ModuleName xComputerManagement, xActiveDirectory, cConfigureSharepoint,xSQL
+        Import-DscResource -ModuleName xComputerManagement, xActiveDirectory, xSharepoint, xSQL
 
         Node localhost
         {
@@ -118,6 +121,57 @@ configuration ConfigureSharePointServerHA
                 DependsOn = "[xComputer]DomainJoin"
             }
 
+			if ($FirstFarmMember = "true") {
+				xSPCreateFarm CreateSPFarm
+				{
+					DatabaseServer           = $DatabaseServer
+					FarmConfigDatabaseName   = $DatabaseNames[1]
+					Passphrase               = $SharePointFarmPassphrasecreds.Password
+					FarmAccount              = $SharePointFarmAccountcreds.UserName
+					PsDscRunAsCredential     = $SPsetupCreds
+					AdminContentDatabaseName = $AdministrationContentDatabaseName
+					DependsOn                = "[xSPInstall]InstallSharePoint"
+				}
+
+				$FarmWaitTask = "[xSPCreateFarm]CreateSPFarm"
+
+				Package SQLCLRTypes
+				{
+					Ensure = 'Present'
+					Path  =  $SQLCLRPath
+					Name = 'Microsoft System CLR Types for SQL Server 2012 (x64)'
+					ProductId = 'F1949145-EB64-4DE7-9D81-E6D27937146C'
+					Credential= $Admincreds
+				}
+				Package SharedManagementObjects
+				{
+					Ensure = 'Present'
+					Path  = $SMOPath
+					Name = 'Microsoft SQL Server 2012 Management Objects  (x64)'
+					ProductId = 'FA0A244E-F3C2-4589-B42A-3D522DE79A42'
+					Credential = $Admincreds
+				}
+			} else {
+				WaitForAll WaitForFarmToExist
+				{
+					ResourceName         = "[xSPCreateFarm]CreateSPFarm"
+					NodeName             = "sps-app-0"
+					RetryIntervalSec     = 60
+					RetryCount           = 60
+					PsDscRunAsCredential = $SPsetupCreds
+				}
+				xSPJoinFarm JoinSPFarm
+				{
+					DatabaseServer           = $DatabaseServer
+					FarmConfigDatabaseName   = $DatabaseNames[1]
+					Passphrase               = $SharePointFarmPassphrasecreds.Password
+					PsDscRunAsCredential     = $SPsetupCreds
+					DependsOn                = "[WaitForAll]WaitForFarmToExist"
+				}
+
+				$FarmWaitTask = "[xSPJoinFarm]JoinSPFarm"
+			}
+
             #cConfigureSharepoint ConfigureSharepointServer
             #{
             #    DomainName=$DomainName
@@ -131,25 +185,6 @@ configuration ConfigureSharePointServerHA
             #    Configuration=$Configuration
             #    DependsOn = "[xADUser]CreateFarmAccount", "[Group]AddSetupUserAccountToLocalAdminsGroup"
             #}
-
-            # These packages should really only be installed on one server but they only take seconds to install and dont require a reboot
-
-            Package SQLCLRTypes
-            {
-                Ensure = 'Present'
-                Path  =  $SQLCLRPath
-                Name = 'Microsoft System CLR Types for SQL Server 2012 (x64)'
-                ProductId = 'F1949145-EB64-4DE7-9D81-E6D27937146C'
-                Credential= $Admincreds
-            }
-            Package SharedManagementObjects
-            {
-                Ensure = 'Present'
-                Path  = $SMOPath
-                Name = 'Microsoft SQL Server 2012 Management Objects  (x64)'
-                ProductId = 'FA0A244E-F3C2-4589-B42A-3D522DE79A42'
-                Credential = $Admincreds
-            }
 
             # This does nothing if Databasenames is null
 

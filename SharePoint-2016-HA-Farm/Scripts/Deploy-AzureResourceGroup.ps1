@@ -3,8 +3,8 @@
 #Requires -Module Azure.Storage
 
 Param(
-    [string] $ResourceGroupLocation = 'southcentralus',
-    [string] $ResourceGroupName = 'SharePoint2016-Test06',
+    [string] $ResourceGroupLocation = 'eastus',
+    [string] $ResourceGroupName = 'SharePoint2016-Test01',
     [switch] $UploadArtifacts,
     [string] $StorageAccountName = 'gc-sp2016test01',
 	[string] $dnsPrefix = 'gcspt01',
@@ -82,7 +82,7 @@ if ($UploadArtifacts) {
         $BlobName = $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerName -Context $StorageAccountContext -Force
     }
-    
+
     # Generate the value for artifacts location SAS token if it is not provided in the parameter file
     $ArtifactsLocationSasToken = $OptionalParameters[$ArtifactsLocationSasTokenName]
     if ($ArtifactsLocationSasToken -eq $null) {

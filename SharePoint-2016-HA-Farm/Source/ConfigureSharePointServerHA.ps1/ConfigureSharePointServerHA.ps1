@@ -1,17 +1,14 @@
 #
-# Copyright="Microsoft Corporation. All rights reserved."
+# Copyright="� Microsoft Corporation. All rights reserved."
 #
 
-configuration ConfigureSharePointServerFarm
+configuration ConfigureSharePointServerHA
 {
 
     param
     (
         [Parameter(Mandatory)]
         [String]$DomainName,
-
-		[Parameter(Mandatory)]
-        [String]$FirstFarmMember,
 
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCredential]$Admincreds,
@@ -61,10 +58,10 @@ configuration ConfigureSharePointServerFarm
         [System.Management.Automation.PSCredential]$SQLCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($SQLServiceCreds.UserName)", $SQLServiceCreds.Password)
 
         # Install Sharepoint Module
-         $ModuleFilePath="$PSScriptRoot\SharePointServer.psm1"
-         $ModuleName = "SharepointServer"
-         $PSModulePath = $Env:PSModulePath -split ";" | Select -Index 1
-         $ModuleFolder = "$PSModulePath\$ModuleName"
+        $ModuleFilePath="$PSScriptRoot\SharePointServer.psm1"
+        $ModuleName = "SharepointServer"
+        $PSModulePath = $Env:PSModulePath -split ";" | Select -Index 1
+        $ModuleFolder = "$PSModulePath\$ModuleName"
         if (-not (Test-Path  $ModuleFolder -PathType Container)) {
             mkdir $ModuleFolder
         }
@@ -75,10 +72,7 @@ configuration ConfigureSharePointServerFarm
         $SMOPath="${PSScriptRoot}\SharedManagementObjects.msi"
         $SQLPSPath="${PSScriptRoot}\PowerShellTools.msi"
 
-        Import-DscResource -ModuleName xComputerManagement
-		Import-DscResource -ModuleName xActiveDirectory
-		Import-DscResource -ModuleName xSharepoint
-		Import-DscResource -ModuleName xSQL
+        Import-DscResource -ModuleName xComputerManagement, xActiveDirectory, cConfigureSharepoint,xSQL
 
         Node localhost
         {
@@ -86,11 +80,6 @@ configuration ConfigureSharePointServerFarm
             LocalConfigurationManager
             {
                 RebootNodeIfNeeded = $true
-				DebugMode = $true
-				AllowModuleOverwrite = $true
-				ConfigurationModeFrequencyMins = 1
-				RefreshFrequencyMins = 1
-				RefreshMode = "Pull"
             }
 
             xWaitForADDomain DscForestWait
@@ -128,57 +117,6 @@ configuration ConfigureSharePointServerFarm
                 DependsOn = "[xComputer]DomainJoin"
             }
 
-			#if ($FirstFarmMember = "true") {
-			#	xSPCreateFarm CreateSPFarm
-			#	{
-			#		DatabaseServer           = $DatabaseServer
-			#		FarmConfigDatabaseName   = $DatabaseNames[1]
-			#		Passphrase               = $SharePointFarmPassphrasecreds
-			#		FarmAccount              = $FarmCreds
-			#		InstallAccount           = $SPsetupCreds
-			#		AdminContentDatabaseName = $AdministrationContentDatabaseName
-			#		DependsOn                = "[xSPInstall]InstallSharePoint"
-			#	}
-
-			#	$FarmWaitTask = "[xSPCreateFarm]CreateSPFarm"
-
-			#	Package SQLCLRTypes
-			#	{
-			#		Ensure = 'Present'
-			#		Path  =  $SQLCLRPath
-			#		Name = 'Microsoft System CLR Types for SQL Server 2012 (x64)'
-			#		ProductId = 'F1949145-EB64-4DE7-9D81-E6D27937146C'
-			#		Credential= $Admincreds
-			#	}
-			#	Package SharedManagementObjects
-			#	{
-			#		Ensure = 'Present'
-			#		Path  = $SMOPath
-			#		Name = 'Microsoft SQL Server 2012 Management Objects  (x64)'
-			#		ProductId = 'FA0A244E-F3C2-4589-B42A-3D522DE79A42'
-			#		Credential = $Admincreds
-			#	}
-			#} else {
-			#	WaitForAll WaitForFarmToExist
-			#	{
-			#		ResourceName         = "[xSPCreateFarm]CreateSPFarm"
-			#		NodeName             = "sps-app-0"
-			#		RetryIntervalSec     = 60
-			#		RetryCount           = 60
-			#		PsDscRunAsCredential = $SPsetupCreds
-			#	}
-			#	xSPJoinFarm JoinSPFarm
-			#	{
-			#		DatabaseServer           = $DatabaseServer
-			#		FarmConfigDatabaseName   = $DatabaseNames[1]
-			#		Passphrase               = $SharePointFarmPassphrasecreds
-			#		InstallAccount           = $SPsetupCreds
-			#		DependsOn                = "[WaitForAll]WaitForFarmToExist"
-			#	}
-
-			#	$FarmWaitTask = "[xSPJoinFarm]JoinSPFarm"
-			#}
-
             cConfigureSharepoint ConfigureSharepointServer
             {
                 DomainName=$DomainName
@@ -193,7 +131,26 @@ configuration ConfigureSharePointServerFarm
                 DependsOn = "[xADUser]CreateFarmAccount", "[Group]AddSetupUserAccountToLocalAdminsGroup"
             }
 
-             This does nothing if Databasenames is null
+            # These packages should really only be installed on one server but they only take seconds to install and dont require a reboot
+
+            Package SQLCLRTypes
+            {
+                Ensure = 'Present'
+                Path  =  $SQLCLRPath
+                Name = 'Microsoft System CLR Types for SQL Server 2012 (x64)'
+                ProductId = 'F1949145-EB64-4DE7-9D81-E6D27937146C'
+                Credential= $Admincreds
+            }
+            Package SharedManagementObjects
+            {
+                Ensure = 'Present'
+                Path  = $SMOPath
+                Name = 'Microsoft SQL Server 2012 Management Objects  (x64)'
+                ProductId = 'FA0A244E-F3C2-4589-B42A-3D522DE79A42'
+                Credential = $Admincreds
+            }
+
+            # This does nothing if Databasenames is null
 
             xSqlNewAGDatabase SQLAGDatabases
             {
@@ -210,9 +167,8 @@ configuration ConfigureSharePointServerFarm
                 SharePointSetupUserAccountcreds=  $SPsetupCreds
             }
         }
-}
-ConfigureSharePointServerFarm
 
+}
 function Get-NetBIOSName
 {
     [OutputType([string])]
@@ -236,7 +192,6 @@ function Get-NetBIOSName
         }
     }
 }
-
 function Update-SPFailOverInstance
 {
     param(

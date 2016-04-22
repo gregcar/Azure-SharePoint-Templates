@@ -126,9 +126,9 @@ configuration ConfigureSharePointServerHA
 				{
 					DatabaseServer           = $DatabaseServer
 					FarmConfigDatabaseName   = $DatabaseNames[1]
-					Passphrase               = $SharePointFarmPassphrasecreds.Password
-					FarmAccount              = $SharePointFarmAccountcreds.UserName
-					PsDscRunAsCredential     = $SPsetupCreds
+					Passphrase               = $SharePointFarmPassphrasecreds
+					FarmAccount              = $FarmCreds
+					InstallAccount           = $SPsetupCreds
 					AdminContentDatabaseName = $AdministrationContentDatabaseName
 					DependsOn                = "[xSPInstall]InstallSharePoint"
 				}
@@ -164,8 +164,8 @@ configuration ConfigureSharePointServerHA
 				{
 					DatabaseServer           = $DatabaseServer
 					FarmConfigDatabaseName   = $DatabaseNames[1]
-					Passphrase               = $SharePointFarmPassphrasecreds.Password
-					PsDscRunAsCredential     = $SPsetupCreds
+					Passphrase               = $SharePointFarmPassphrasecreds
+					InstallAccount           = $SPsetupCreds
 					DependsOn                = "[WaitForAll]WaitForFarmToExist"
 				}
 

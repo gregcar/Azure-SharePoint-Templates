@@ -75,7 +75,10 @@ configuration ConfigureSharePointServerHA
         $SMOPath="${PSScriptRoot}\SharedManagementObjects.msi"
         $SQLPSPath="${PSScriptRoot}\PowerShellTools.msi"
 
-        Import-DscResource -ModuleName xComputerManagement, xActiveDirectory, xSharepoint, xSQL
+        Import-DscResource -ModuleName xComputerManagement
+		Import-DscResource -ModuleName xActiveDirectory
+		Import-DscResource -ModuleName xSharepoint
+		Import-DscResource -ModuleName xSQL
 
         Node localhost
         {

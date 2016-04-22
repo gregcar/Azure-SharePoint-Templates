@@ -1254,7 +1254,7 @@
             "mode":"Incremental",
             "templateLink":{
                "uri":"[variables('configuration').configuringSharepointUrl]",
-               "contentVersion":"1.0.0.0"
+              "contentVersion": "1.0.0.0"             
             },
             "parameters":{
                "spappVMName":{

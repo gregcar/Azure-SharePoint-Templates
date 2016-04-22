@@ -1,4 +1,4 @@
-#
+conf#
 # Copyright="� Microsoft Corporation. All rights reserved."
 #
 
@@ -83,7 +83,11 @@ configuration ConfigureSharePointServerHA
             LocalConfigurationManager
             {
                 RebootNodeIfNeeded = $true
-				DebugMode = "All"
+				DebugMode = $true
+				AllowModuleOverwrite = $true
+				ConfigurationModeFrequencyMins = 1
+				RefreshFrequencyMins = 1
+				RefreshMode = "Pull"
             }
 
             xWaitForADDomain DscForestWait

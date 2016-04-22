@@ -61,14 +61,14 @@ configuration ConfigureSharePointServerFarm
         [System.Management.Automation.PSCredential]$SQLCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($SQLServiceCreds.UserName)", $SQLServiceCreds.Password)
 
         # Install Sharepoint Module
-        # $ModuleFilePath="$PSScriptRoot\SharePointServer.psm1"
-        # $ModuleName = "SharepointServer"
-        # $PSModulePath = $Env:PSModulePath -split ";" | Select -Index 1
-        # $ModuleFolder = "$PSModulePath\$ModuleName"
-        #if (-not (Test-Path  $ModuleFolder -PathType Container)) {
-        #    mkdir $ModuleFolder
-        #}
-        #Copy-Item $ModuleFilePath $ModuleFolder -Force
+         $ModuleFilePath="$PSScriptRoot\SharePointServer.psm1"
+         $ModuleName = "SharepointServer"
+         $PSModulePath = $Env:PSModulePath -split ";" | Select -Index 1
+         $ModuleFolder = "$PSModulePath\$ModuleName"
+        if (-not (Test-Path  $ModuleFolder -PathType Container)) {
+            mkdir $ModuleFolder
+        }
+        Copy-Item $ModuleFilePath $ModuleFolder -Force
 
 
         $SQLCLRPath="${PSScriptRoot}\SQLSysClrTypes.msi"
@@ -179,36 +179,36 @@ configuration ConfigureSharePointServerFarm
 				$FarmWaitTask = "[xSPJoinFarm]JoinSPFarm"
 			}
 
-            #cConfigureSharepoint ConfigureSharepointServer
-            #{
-            #    DomainName=$DomainName
-            #    DomainAdministratorCredential=$DomainCreds
-            #    DatabaseName=$DatabaseName
-            #    AdministrationContentDatabaseName=$AdministrationContentDatabaseName
-            #    DatabaseServer=$DatabaseServer
-            #    SetupUserAccountCredential=$SPsetupCreds
-            #    FarmAccountCredential=$SharePointFarmAccountcreds
-            #    FarmPassphrase=$SharePointFarmPassphrasecreds
-            #    Configuration=$Configuration
-            #    DependsOn = "[xADUser]CreateFarmAccount", "[Group]AddSetupUserAccountToLocalAdminsGroup"
-            #}
+            cConfigureSharepoint ConfigureSharepointServer
+            {
+                DomainName=$DomainName
+                DomainAdministratorCredential=$DomainCreds
+                DatabaseName=$DatabaseName
+                AdministrationContentDatabaseName=$AdministrationContentDatabaseName
+                DatabaseServer=$DatabaseServer
+                SetupUserAccountCredential=$SPsetupCreds
+                FarmAccountCredential=$SharePointFarmAccountcreds
+                FarmPassphrase=$SharePointFarmPassphrasecreds
+                Configuration=$Configuration
+                DependsOn = "[xADUser]CreateFarmAccount", "[Group]AddSetupUserAccountToLocalAdminsGroup"
+            }
 
-            # This does nothing if Databasenames is null
+             This does nothing if Databasenames is null
 
-            #xSqlNewAGDatabase SQLAGDatabases
-            #{
-            #    SqlAlwaysOnAvailabilityGroupName = $SqlAlwaysOnAvailabilityGroupName
-            #    DatabaseNames = $DatabaseNames
-            #    PrimaryReplica = $PrimaryReplica
-            #    SecondaryReplica = $SecondaryReplica
-            #    SqlAdministratorCredential = $SQLCreds
-            #}
-            #cConfigureSPSDBDFailover UpdateSPFailover
-            #{
-            #    DatabaseNames = $DatabaseNames
-            #    FailoverServerInstance = $SecondaryReplica
-            #    SharePointSetupUserAccountcreds=  $SPsetupCreds
-            #}
+            xSqlNewAGDatabase SQLAGDatabases
+            {
+                SqlAlwaysOnAvailabilityGroupName = $SqlAlwaysOnAvailabilityGroupName
+                DatabaseNames = $DatabaseNames
+                PrimaryReplica = $PrimaryReplica
+                SecondaryReplica = $SecondaryReplica
+                SqlAdministratorCredential = $SQLCreds
+            }
+            cConfigureSPSDBDFailover UpdateSPFailover
+            {
+                DatabaseNames = $DatabaseNames
+                FailoverServerInstance = $SecondaryReplica
+                SharePointSetupUserAccountcreds=  $SPsetupCreds
+            }
         }
 }
 ConfigureSharePointServerFarm

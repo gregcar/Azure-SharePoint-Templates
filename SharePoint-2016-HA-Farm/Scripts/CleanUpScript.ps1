@@ -15,8 +15,8 @@ Get-AzureStorageBlob -Context $spStorageContext -Container "vhds" | Where-Object
 
 
 #Clean up BDC
-Write-Host "Cleaning up BDC VM"
-Remove-AzureRmVM -Name "ad-bdc" -ResourceGroupName $resourceGroup -Force
-Get-AzureStorageBlob -Context $adStorageContext -Container "vhds" | Where-Object { $_.BlobType -eq "PageBlob" -and $_.Name -like "ad-bdc*.vhd"} | Remove-AzureStorageBlob
+#Write-Host "Cleaning up BDC VM"
+#Remove-AzureRmVM -Name "ad-bdc" -ResourceGroupName $resourceGroup -Force
+#Get-AzureStorageBlob -Context $adStorageContext -Container "vhds" | Where-Object { $_.BlobType -eq "PageBlob" -and $_.Name -like "ad-bdc*.vhd"} | Remove-AzureStorageBlob
 
 Write-Host "Cleanup Complete!"

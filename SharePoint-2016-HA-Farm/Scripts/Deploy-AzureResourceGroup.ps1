@@ -82,7 +82,7 @@ if ($UploadArtifacts) {
         $BlobName = $SourcePath.Substring($ArtifactStagingDirectory.length + 1)
         Set-AzureStorageBlobContent -File $SourcePath -Blob $BlobName -Container $StorageContainerName -Context $StorageAccountContext -Force
     }
-
+    
     # Generate the value for artifacts location SAS token if it is not provided in the parameter file
     $ArtifactsLocationSasToken = $OptionalParameters[$ArtifactsLocationSasTokenName]
     if ($ArtifactsLocationSasToken -eq $null) {

@@ -1,8 +1,8 @@
 #
-# Copyright="� Microsoft Corporation. All rights reserved."
+# Copyright="Microsoft Corporation. All rights reserved."
 #
 
-configuration ConfigureSharePointServerHA
+configuration ConfigureSharePointServerFarm
 {
 
     param
@@ -210,8 +210,9 @@ configuration ConfigureSharePointServerHA
             #    SharePointSetupUserAccountcreds=  $SPsetupCreds
             #}
         }
-
 }
+ConfigureSharePointServerFarm
+
 function Get-NetBIOSName
 {
     [OutputType([string])]
@@ -235,6 +236,7 @@ function Get-NetBIOSName
         }
     }
 }
+
 function Update-SPFailOverInstance
 {
     param(

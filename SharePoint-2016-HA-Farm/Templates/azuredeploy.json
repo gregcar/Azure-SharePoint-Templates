@@ -387,7 +387,7 @@
       "configureClusterModulesURL": "[concat(variables('assetLocation'),'/ConfigureFailoverCluster.ps1.zip')]",
       "configureClusterConfigurationFunction": "ConfigureFailoverCluster.ps1\\ConfigureFailoverCluster",
       "spConfigurationModulesURL": "[concat(variables('assetLocation'),'/ConfigureSharePointServerHA.ps1.zip')]",
-      "spConfigurationFunction": "ConfigureSharePointServerHA.ps1\\ConfigureSharePointServerHA",
+      "spConfigurationFunction": "ConfigureSharePointServerHA.ps1\\ConfigureSharePointServerFarm",
       "spPreparationModulesURL": "[concat(variables('assetLocation'),'/PrepareSharePointServerHA.ps1.zip')]",
       "spPreparationFunction": "PrepareSharePointServerHA.ps1\\PrepareSharePointServerHA",
       "spWebIPAdressSetupURL": "[concat(parameters('baseUrl'),'/publicip-',parameters('spWebIPNewOrExisting'),'.json')]",
